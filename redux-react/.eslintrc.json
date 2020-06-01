@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {   
+        "linebreak-style": 0,
+        "comma-dangle": "off",    
+        "indent": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",   
+        "no-trailing-spaces": "off",
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "no-tabs": 0,
+        "no-mixed-spaces-and-tabs": 0,
+        "no-console": "off",
+        "max-classes-per-file": ["error", 2],
+         "jsx-a11y/label-has-for": [ 2, {
+            "components": [ "Label" ],
+            "required": {
+                "every": [ "nesting", "id" ]
+            },
+            "allowChildren": true
+        }]
+    },
+    "parser": "babel-eslint"
+}
