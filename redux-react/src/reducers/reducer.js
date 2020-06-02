@@ -61,6 +61,8 @@ const reducerExample = (state = initialState, action) => {
              };
             }
         case 'INPUT_CHANGE': 
+            console.log(action.name);
+            console.log(action.value);
             return {
                 ...state,
                 [action.name]: action.value

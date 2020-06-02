@@ -63,7 +63,7 @@ class FormInput extends React.Component {
 		const { 
 				post: { 
 					name, english, tamil, maths, science, social, id, gender, department, imgName, img, imgData
-					}, errorclass, noerror, updateData, redirect, data
+					}, errorclass, noerror, updateData, redirect
 			} = this.props;
 		console.log(imgData);
 		if (name === '' || english === '' || tamil === '' || maths === '' || science === '' || social === '') {
@@ -284,7 +284,7 @@ class FormInput extends React.Component {
 					<Label htmlFor="department" className="font-weight-bold">
 						Department:
 				<br />
-					<Input className="w-75 mx-auto" type="select" value={section} onChange={this.handleChange} name="section">
+					<Input className="w-75 mx-auto" type="select" value={section} onChange={this.handleChange} name="department">
 						<option value="A">A</option>
 						<option value="B">B</option>
 						<option value="C">C</option>

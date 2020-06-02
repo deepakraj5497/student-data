@@ -58,7 +58,7 @@ mysql_connection.query(image_table, (err, rows, fields) => {
       }
 });
 
-//Get all images data from mysql database
+//Get all data from mysql database
 app.get('/get_data', (req, res) => {
     mysql_connection.query('SELECT * FROM image_table', (err, rows, fields) =>{
         if(!err){
@@ -122,16 +122,13 @@ app.delete("/delete_data/:id", (req, res) => {
     let id = req.params.id;
     mysql_connection.query('DELETE FROM image_table WHERE id = ?', [id], (err, rows, fields) => {
         if(!err){
+            console.log(rows);
             res.send(rows);
         } else {
             console.log(err);
         }
     })
 });
-
-app.get("/view_image", (req, res) => {
-    res.status(200).send(image_data);
-  });
 
 app.listen(port, () => {
   console.log(`running at port ${port}`);

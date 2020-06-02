@@ -80,9 +80,7 @@ class Tabledata extends React.Component {
 		console.log(key);
 		if (conform === true) {
 			const { data } = this.props;
-			axios.delete(`http://localhost:3500/delete_data/${key}`, {
-				key
-			}).then((res) => console.log(res.data)).then((err) => console.log(err));
+			axios.delete(`http://localhost:3500/delete_data/${key}`).then((res) => console.log(res.data)).then((err) => console.log(err));
 			axios.get('http://localhost:3500/get_data')
 			.then((res) => {
 		 	 data(res.data);
