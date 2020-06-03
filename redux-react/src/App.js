@@ -21,7 +21,7 @@ function App(props) {
       <Navbar color="text-light" className="justify-content-center" light expand="md">
 			  <Nav className="font-weight-bold" navbar>
           <NavItem>
-					  <Link className="nav-link" to="/">Home</Link>
+					  <Link className="nav-link" to="/student-data">Home</Link>
           </NavItem>
           <NavItem>
 					  <Link className="nav-link" to="/student-data/login">Login</Link>
@@ -50,7 +50,7 @@ function App(props) {
             return (<StudentTable />);
           }}
         />
-        <Route path="/">
+        <Route path="/student-data">
 					<Home />
         </Route>
         <Route path="/student-data/login">
