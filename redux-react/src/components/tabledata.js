@@ -5,13 +5,14 @@ import axios from 'axios';
 class Tabledata extends React.Component {
 	componentDidMount() {
 		const { 
-				data
+				post: { direction }, data
 			} = this.props;
+		console.log(direction);
 		axios.get('http://localhost:3500/get_data')
 		.then((res) => {
 		  data(res.data);
 		  this.totalRank();
-		});		
+		});
 	}
 
 	getdata(index) {
@@ -42,12 +43,12 @@ class Tabledata extends React.Component {
 				post 
 				}, totalrank 
 			} = this.props;
-		console.log(post);
+		//console.log(post);
 		post.forEach((n) => {
 			const {
 				english, tamil, maths, science, social 
 			} = n;
-			console.log(english);
+			//console.log(english);
 			total = english + tamil + maths + science + social;
 			rankArr = `${rankArr}${total},`;
 			unorder = rankArr.split(',').map(Number);
@@ -90,7 +91,7 @@ class Tabledata extends React.Component {
 
 	render() {
 		const { post: { post, pageSize, currentPage } } = this.props;
-		console.log(post);
+		//console.log(post);
 		const lastIndex = currentPage * pageSize;
 		const firstIndex = lastIndex - pageSize;
 		const currentItem = post.slice(firstIndex, lastIndex);
@@ -99,7 +100,7 @@ class Tabledata extends React.Component {
  			name, english, tamil, maths, science, social, image_name, gender, department, id
 			} = n;
 		const total = english + tamil + maths + science + social;
-		console.log(require(`../assets/${image_name}`));
+		//console.log(require(`../assets/${image_name}`));
 		return (
 			<tr key={id} className="allRows">
            		<td>{name}</td>

@@ -17,7 +17,7 @@ imgData: false,
 newimg: '',
 pageSize: 5,
 currentPage: 1,
-sortOn: false,
+sortOn: true,
 direction: 'asc',
 oldDirection: '',
 className1: false,
@@ -30,7 +30,7 @@ sciClass: false,
 socClass: false,
 totalClass: false,
 rankClass: false,
-key: '',
+key: 'name',
 nameCheck: 'form-control',
 englishCheck: 'form-control',
 tamilCheck: 'form-control',
@@ -42,13 +42,18 @@ edit: '',
 addRedirect: '',
 gender: 'male',
 department: 'A',
-dropdown: 5
+dropdown: 5,
+email: "",
+password:"",
+mobileNumber:"",
+userEmail:"",
+userPassword:""
 };
 
 const reducerExample = (state = initialState, action) => {
     switch (action.type) {
         case 'DATA': 
-            console.log(action.data);
+            //console.log(action.data);
             return {
                 ...state,
                 post: action.data
@@ -128,6 +133,8 @@ const reducerExample = (state = initialState, action) => {
                 dropdown: action.data
             };
         case 'SORT_DIRECTION': 
+            console.log(action.data);
+            console.log(state.direction);
             return {
                 ...state,
                 direction: action.data
@@ -138,7 +145,6 @@ const reducerExample = (state = initialState, action) => {
                 oldDirection: action.data
             };
         case 'SORTING': 
-            console.log(action.data);
             return {
                 ...state,
                 post: action.data,

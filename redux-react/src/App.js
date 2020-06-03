@@ -12,23 +12,20 @@ import './App.css';
 import Home from './components/home';
 import StudentTable from './components/studenttable';
 import FormInput from './components/form';
-
+import Login from './components/login';
 
 function App(props) {
   return (
 	<Router>
 		<div className="text-center">
       <Navbar color="text-light" className="justify-content-center" light expand="md">
-			  <Nav className="font-weight-bold">
+			  <Nav className="font-weight-bold" navbar>
           <NavItem>
-					  <Link className="nav-link" to="/react">Home</Link>
+					  <Link className="nav-link" to="/">Home</Link>
           </NavItem>
-				  <NavItem>
-            <Link className="nav-link" to="/react/form">Form</Link>
-				  </NavItem>
-				  <NavItem>
-            <Link className="nav-link" to="/react/studentlist">Student List</Link>
-				  </NavItem>
+          <NavItem>
+					  <Link className="nav-link" to="/student-data/login">Login</Link>
+          </NavItem>
 			  </Nav>
       </Navbar>
 			<Switch>
@@ -53,8 +50,11 @@ function App(props) {
             return (<StudentTable />);
           }}
         />
-        <Route path="/react">
+        <Route path="/">
 					<Home />
+        </Route>
+        <Route path="/student-data/login">
+					<Login />
         </Route>
 			</Switch>
 		</div>
