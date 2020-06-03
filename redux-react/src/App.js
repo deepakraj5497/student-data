@@ -36,7 +36,7 @@ function App(props) {
                 return <Redirect to="/react/studentlist" />;
               }
               if (props.post.addRedirect === true) {
-                return <Redirect to="/react/studentlist" />;
+                return <Redirect to="/react/studentlist"  />;
               }
             return <FormInput />;
           }}
