@@ -58,7 +58,23 @@ mysql_connection.query(image_table, (err, rows, fields) => {
       }
 });
 
-//Get all data from mysql database
+let sign_up = `create table if not exists sign_up(
+                        id int primary key auto_increment,
+                        email varchar(255)not null,
+                        password varchar(255) not null,
+                        mobile_number BIGINT not null
+                    )`;
+
+mysql_connection.query(sign_up, (err, rows, fields) => {
+    if (!err) {
+        console.log(err);
+    }else {
+        console.log("Sign up table created successfully");
+    }
+});
+
+
+//Get all student data from mysql database
 app.get('/get_data', (req, res) => {
     mysql_connection.query('SELECT * FROM image_table', (err, rows, fields) =>{
         if(!err){
@@ -128,6 +144,30 @@ app.delete("/delete_data/:id", (req, res) => {
             console.log(err);
         }
     })
+});
+
+app.post('/sign_up', (req, res) => {
+    const data = req.body;
+    let statement = `INSERT INTO sign_up(email,password,mobile_number)
+            VALUES(?,?,?)`;
+    let dataValues = [data.email,data.password,data.mobileNumber];
+    mysql_connection.query(statement, dataValues, (err, rows, fields) => {
+        if(!err){
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+    });  
+});
+
+app.get('/signup_data', (req, res) => {
+    mysql_connection.query('SELECT * FROM sign_up', (err, rows, fields) =>{
+        if(!err){
+            res.send(rows);
+        } else {
+            console.log(err);
+        }
+    });
 });
 
 app.listen(port, () => {

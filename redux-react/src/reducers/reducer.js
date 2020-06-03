@@ -47,7 +47,8 @@ email: "",
 password:"",
 mobileNumber:"",
 userEmail:"",
-userPassword:""
+userPassword:"",
+login: false
 };
 
 const reducerExample = (state = initialState, action) => {
@@ -234,6 +235,20 @@ const reducerExample = (state = initialState, action) => {
             return {
                 ...state,
                 duplicate: action.data
+            };
+        case 'LOGIN': 
+            return {
+                ...state,
+                login: action.data,
+                userEmail: '',
+                userPassword: ''
+            };
+        case 'SIGNUP': 
+            return {
+                ...state,
+                email: '',
+                password: '',
+                mobileNumber: ''
             };
         default: 
             return state;

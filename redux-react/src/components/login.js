@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
 	 Form, FormGroup, Label, Input, Button 
-		} from 'reactstrap';
+        } from 'reactstrap';
+import axios from 'axios';
 
 class Login extends React.Component {
     signUp = (e) => {
@@ -10,6 +11,74 @@ class Login extends React.Component {
 		let { value } = e.target;
         const { inputChange } = this.props;
         inputChange(name, value);
+    }
+
+    signUpsubmit = () => {
+        const { 
+			post: { 
+                    email, password, mobileNumber
+				}, signup
+            } = this.props;
+        let mailformat = /^\w+[\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i ;
+        if(email === '' || password === '' || mobileNumber === ''){
+            window.alert("email, password, mobile number cannot be empty");
+            return
+        }
+        if(!email.match(mailformat)){
+            window.alert("Please enter valid email address");
+            return
+        }
+        if(password.length < 6){   
+            window.alert("password must be greater than 6 letters");
+            return
+        }
+        let phoneno = /^\d{10}$/;
+        if(!mobileNumber.match(phoneno)){
+            window.alert("Mobile number sholud be 10 digit");
+            return false;
+        }
+        axios.post("http://localhost:3500/sign_up", { email, password, mobileNumber })
+        .then((response) => {
+            console.log(response);
+            window.alert("Account created successfully");
+            signup();
+        },(error) => {
+            console.log(error);
+        });
+    }
+
+    loginSubmit = () => {
+        const { 
+			post: { 
+                    userEmail, userPassword
+				}, login
+            } = this.props;
+            let mailformat = /^\w+[\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i ;
+            if(userEmail === '' || userPassword === ''){
+                window.alert("email, password cannot be empty");
+                return
+            }
+            if(!userEmail.match(mailformat)){
+                window.alert("Please enter valid email address");
+                return
+            }
+            if(userPassword.length < 6){   
+                window.alert("password must be greater than 6 letters");
+                return
+            }
+            axios.get('http://localhost:3500/signup_data')
+		    .then((res) => {
+            res.data.map((data, i) =>{
+                console.log(data);
+                if(data.email === userEmail){
+                    console.log(data.email);
+                    if(data.password === userPassword){
+                        console.log(data.password);  
+                        login(true);
+                    }
+                }
+            }); 
+		});
     }
 
     render(){
@@ -34,9 +103,9 @@ class Login extends React.Component {
                                 <Input type="password" name="userPassword" value={userPassword} onChange={this.signUp} />
                             </FormGroup>
                             <div className="text-right mb-3">
-                                <Button className="border-0 w-25" style={{backgroundColor:"#f6871e"}}>Log in</Button>
+                                <Button className="border-0 w-25" onClick={this.loginSubmit} style={{backgroundColor:"#f6871e"}}>Log in</Button>
                             </div>
-                            <div className="login-border mb-3">
+                        {/*    <div className="login-border mb-3">
                                 <span className="bg-white text-secondary">
                                     Log in with:
                                 </span>
@@ -48,7 +117,7 @@ class Login extends React.Component {
                                 <div className="col-md-6">
                                     <Button className="bg-white text-dark px-5">Facebook</Button>
                                 </div>
-                            </div>
+                            </div> */}
                         </Form>
                     </div>
                 </div>
@@ -71,13 +140,12 @@ class Login extends React.Component {
                                 <Input type="number" name="mobileNumber" value={mobileNumber} onChange={this.signUp} />
                             </FormGroup>
                             <div className="text-center mb-3">
-                                <Button className="bg-info border-0 w-50">Register</Button>
+                                <Button onClick={this.signUpsubmit} className="border-0 w-50 bg-info">Register</Button>
                             </div>
                         </Form>
                     </div>
                 </div>
             </div>
-            
         </div>)
     }
 }
@@ -87,7 +155,9 @@ const mapStatetoProps = (state) => ({
 });
 
 const mapDispatchtoProps = (dispatch) => ({
-    inputChange: (name, value) => { dispatch({ type: 'INPUT_CHANGE', name, value }); }
+    inputChange: (name, value) => { dispatch({ type: 'INPUT_CHANGE', name, value }); },
+    login: (data) => { dispatch({ type: 'LOGIN', data}); },
+    signup: (data) => { dispatch({ type: 'SIGNUP'}); }
 });
 
 export default connect(mapStatetoProps, mapDispatchtoProps)(Login);

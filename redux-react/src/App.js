@@ -13,58 +13,95 @@ import Home from './components/home';
 import StudentTable from './components/studenttable';
 import FormInput from './components/form';
 import Login from './components/login';
+import Logout from './components/logout';
 
-function App(props) {
-  return (
-	<Router>
-		<div className="text-center">
-      <Navbar color="text-light" className="justify-content-center" light expand="md">
-			  <Nav className="font-weight-bold" navbar>
-          <NavItem>
-					  <Link className="nav-link" to="/student-data/">Home</Link>
-          </NavItem>
-          <NavItem>
-					  <Link className="nav-link" to="/student-data/login">Login</Link>
-          </NavItem>
-			  </Nav>
-      </Navbar>
+class App extends React.Component{
+  logout = () => {
+    const { 
+            login
+            } = this.props;
+    login(false);
+  }
+
+  render(){
+    let button;
+    if(this.props.post.login){
+      button = <Link onClick={this.logout} className="nav-link text-dark" to="/student-data/login">Logout</Link>
+    }else {
+      button = <Link className="nav-link text-dark" to="/student-data/login">Login</Link>
+    }
+    return (
+	    <Router>
+		    <div className="text-center">
+          <Navbar className="justify-content-center" style={{backgroundColor:"Gainsboro"}} expand="md">
+			      <Nav className="font-weight-bold" navbar>
+              <NavItem className="mx-4">
+					      <Link className="nav-link text-dark" to="/student-data/">Home</Link>
+              </NavItem>
+              <NavItem className="mx-4">
+                <Link className="nav-link text-dark" to="/student-data/form">Form</Link>
+				      </NavItem>
+				      <NavItem className="mx-4">
+                <Link className="nav-link text-dark" to="/student-data/studentlist">Student List</Link>
+				      </NavItem>
+              <NavItem className="mx-4">
+                {button}
+              </NavItem>
+			      </Nav>
+          </Navbar>
 			<Switch>
         <Route 
-            path="/react/form" 
+            path="/student-data/form" 
             render={() => {
-              if (props.post.edit === false) {
-                return <Redirect to="/react/studentlist" />;
+              if(this.props.post.login){
+                if (this.props.post.edit === false) {
+                  return <Redirect to="/student-data/studentlist" />;
+                }
+                if (this.props.post.addRedirect === true) {
+                  return <Redirect to="/student-data/studentlist"  />;
+                }
+                return <FormInput />;
               }
-              if (props.post.addRedirect === true) {
-                return <Redirect to="/react/studentlist"  />;
-              }
-            return <FormInput />;
+              return <Logout />
           }}
         />
         <Route 
-          path="/react/studentlist"
+          path="/student-data/studentlist"
           render={() => {
-            if (props.post.edit === true) {
-              return <Redirect to="/react/form" />;
+            if(this.props.post.login){
+              if (this.props.post.edit === true) {
+                return <Redirect to="/student-data/form" />;
+              }
+              return (<StudentTable />);
             }
-            return (<StudentTable />);
+            return <Logout />
           }}
         />
         <Route exact path="/student-data/">
 					<Home />
         </Route>
-        <Route path="/student-data/login">
-					<Login />
-        </Route>
+        <Route 
+          path="/student-data/login"
+          render = {() => {
+            if(this.props.post.login){
+              return <Redirect to="/student-data/studentlist"  />;
+            }
+            return ( <Login /> );
+          }}
+        />
 			</Switch>
 		</div>
 	</Router>
   );
 }
-
+}
 
 const mapStatetoProps = (state) => ({
     post: state
 });
 
-export default connect(mapStatetoProps)(App);
+const mapDispatchtoProps = (dispatch) => ({
+  login: (data) => { dispatch({ type: 'LOGIN', data}); }
+});
+
+export default connect(mapStatetoProps, mapDispatchtoProps)(App);
