@@ -8,6 +8,7 @@ import {
     Nav,
     NavItem
   } from 'reactstrap';
+import { withCookies } from 'react-cookie';
 import './App.css';
 import Home from './components/home';
 import StudentTable from './components/studenttable';
@@ -16,10 +17,21 @@ import Login from './components/login';
 import Logout from './components/logout';
 
 class App extends React.Component{
+  componentDidMount(){
+    const { 
+        login, cookies
+        } = this.props;
+       if(cookies.get("login")){
+           console.log(cookies.get("login"));
+           login(true);
+       }
+   }
+
   logout = () => {
     const { 
-            login
+            login, cookies
             } = this.props;
+    cookies.remove('login', { path: '/' });
     login(false);
   }
 
@@ -60,7 +72,7 @@ class App extends React.Component{
                 if (this.props.post.addRedirect === true) {
                   return <Redirect to="/student-data/studentlist"  />;
                 }
-                return <FormInput />;
+                return <FormInput cookies={this.props.cookies} />;
               }
               return <Logout />
           }}
@@ -72,9 +84,9 @@ class App extends React.Component{
               if (this.props.post.edit === true) {
                 return <Redirect to="/student-data/form" />;
               }
-              return (<StudentTable />);
+              return (<StudentTable cookies={this.props.cookies} />);
             }
-            return <Logout />
+            return <Logout cookies={this.props.cookies} />
           }}
         />
         <Route exact path="/student-data/">
@@ -86,7 +98,7 @@ class App extends React.Component{
             if(this.props.post.login){
               return <Redirect to="/student-data/studentlist"  />;
             }
-            return ( <Login /> );
+            return ( <Login cookies={this.props.cookies} /> );
           }}
         />
 			</Switch>
@@ -96,12 +108,13 @@ class App extends React.Component{
 }
 }
 
-const mapStatetoProps = (state) => ({
-    post: state
+const mapStatetoProps = (state, ownProps) => ({
+    post: state,
+    cookies: ownProps.cookies
 });
 
 const mapDispatchtoProps = (dispatch) => ({
   login: (data) => { dispatch({ type: 'LOGIN', data}); }
 });
 
-export default connect(mapStatetoProps, mapDispatchtoProps)(App);
+export default withCookies(connect(mapStatetoProps, mapDispatchtoProps)(App));

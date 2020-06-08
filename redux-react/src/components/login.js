@@ -6,6 +6,16 @@ import {
 import axios from 'axios';
 
 class Login extends React.Component {
+  /* componentDidMount(){
+    const { 
+        login, cookies
+        } = this.props;
+       if(cookies.get("login")){
+           console.log(cookies.get("login"));
+           login(true);
+       }
+   } */
+
     signUp = (e) => {
         const { name } = e.target;
 		let { value } = e.target;
@@ -51,7 +61,7 @@ class Login extends React.Component {
         const { 
 			post: { 
                     userEmail, userPassword
-				}, login
+				}, login, cookies
             } = this.props;
             let mailformat = /^\w+[\w-]*@([\w-]+\.)*\w+[\w-]*\.([a-z]{2,4}|\d+)$/i ;
             if(userEmail === '' || userPassword === ''){
@@ -69,11 +79,11 @@ class Login extends React.Component {
             axios.get('http://localhost:3500/signup_data')
 		    .then((res) => {
             res.data.map((data, i) =>{
-                console.log(data);
                 if(data.email === userEmail){
                     console.log(data.email);
                     if(data.password === userPassword){
-                        console.log(data.password);  
+                        console.log(data.password);
+                        cookies.set('login', data.email, { path: '/' , maxAge: 1000 * 60 * 60 * 24 })
                         login(true);
                     }
                 }
@@ -150,8 +160,9 @@ class Login extends React.Component {
     }
 }
 
-const mapStatetoProps = (state) => ({
-    post: state
+const mapStatetoProps = (state, ownProps) => ({
+    post: state,
+    cookies: ownProps.cookies
 });
 
 const mapDispatchtoProps = (dispatch) => ({

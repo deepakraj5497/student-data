@@ -1,16 +1,22 @@
-const express = require("express");
+const express = require('express');
 
 const app = express();
-const bodyparser = require("body-parser");
+const bodyparser = require('body-parser');
+//const morgan = require('morgan');
+//const cookieParser = require('cookie-parser');
+//const session = require('express-session');
+//const MySQLStore = require('express-mysql-session')(session);
 
 const port = process.env.PORT || 3500;
 
 app.use(bodyparser.json({limit: '50mb'}));
 app.use(bodyparser.urlencoded({ extended: false }));
+//app.use(morgan('dev'));
+//app.use(cookieParser());
 
 app.use(function (req, res, next) {
 
-    res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.header('Access-Control-Allow-Origin', '*' );
 
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
@@ -28,6 +34,30 @@ var mysql_connection = mysql.createConnection({
     password: "deepakraj5497",
     database: "images"
 });
+
+/* var sessionStore = new MySQLStore({
+    expiration: 10800000,
+    createDatabaseTable: true,
+    schema: {
+        tableName: 'USERS_SESSIONS',
+        columnNames: {
+            session_id: 'session_id',
+            expires: 'expires',
+            data: 'data'
+        }
+    }
+}, mysql_connection); */
+
+/*app.use(session({
+    key: 'connect-sid',
+    secret: 'some secret',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        maxAge: 1000 * 60 * 60 * 24
+    }
+})); */
 
 mysql_connection.connect((err) => {
     if(!err)

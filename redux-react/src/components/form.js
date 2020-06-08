@@ -16,8 +16,6 @@ class FormInput extends React.Component {
 	handleChange=(e) => {
 		const { name } = e.target;
 		let { value } = e.target;
-		console.log(name);
-		console.log(value);
 		const { errorclass, inputChange } = this.props;
 		if (name === 'english' || name === 'tamil' || name === 'maths' || name === 'science' || name === 'social') {
 			if (value > 100) {
@@ -63,7 +61,7 @@ class FormInput extends React.Component {
 		const { 
 				post: { 
 					name, english, tamil, maths, science, social, id, gender, department, imgName, img, imgData
-					}, errorclass, noerror, updateData, redirect
+					}, errorclass, noerror, updateData, redirect, data
 			} = this.props;
 		console.log(imgData);
 		if (name === '' || english === '' || tamil === '' || maths === '' || science === '' || social === '') {
@@ -86,7 +84,10 @@ class FormInput extends React.Component {
 		axios.patch('http://localhost:3500/update_data', {
 			name, english, tamil, maths, science, social, gender, department, imgName, id, img, imgData
 		}).then((res) => console.log(res.data)).then((err) => console.log(err));
-		
+		axios.get('http://localhost:3500/get_data')
+			.then((res) => {
+		 	 data(res.data);
+		});
 		window.alert("Updated successfully");
 		updateData();
 		redirect(false);
@@ -95,22 +96,9 @@ class FormInput extends React.Component {
 	handleClick() {
 		const { 
 			post: { 
-				post, name, english, tamil, maths, science, social, gender, department, img, imgName, imgType, imgData 
-				}, errorclass, noerror, addData, redirectadd
+				name, english, tamil, maths, science, social, gender, department, img, imgName, imgType, imgData 
+				}, errorclass, noerror, addData, redirectadd, data
 			} = this.props;
-		const id = post.length + 1;
-		const newData = {
-			name,
-		   english: parseInt(english, 10),
-		   tamil: parseInt(tamil, 10),
-		   maths: parseInt(maths, 10),
-		   science: parseInt(science, 10),
-		   social: parseInt(social, 10),
-		   id, 
-		   gender,
-		   department,
-		   img 
-		   };
 		if (name === '' || english === '' || tamil === '' || maths === '' || science === '' || social === '') {
 			if (name === '') {
    				errorclass('nameCheck', 'form-control error');
@@ -135,11 +123,12 @@ class FormInput extends React.Component {
             console.log(response);
           }, (error) => {
               console.log(error);
-		  });	
-		const data = post.concat(newData);
-		console.log(newData);
-		console.log(data);
-		addData(data, newData);
+		  });
+		axios.get('http://localhost:3500/get_data')
+			.then((res) => {
+		 	 data(res.data);
+		});	
+		addData();
 		window.alert('Added successfully');
 		redirectadd(true);
 	}

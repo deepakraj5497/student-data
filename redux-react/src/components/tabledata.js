@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 class Tabledata extends React.Component {
-	componentDidMount() {
+	async componentDidMount() {
 		const { 
 				post: { direction }, data
 			} = this.props;
 		console.log(direction);
-		axios.get('http://localhost:3500/get_data')
+		await axios.get('http://localhost:3500/get_data')
 		.then((res) => {
 		  data(res.data);
 		  this.totalRank();
